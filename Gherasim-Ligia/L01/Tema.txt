@@ -1,0 +1,28 @@
+https://stackoverflow.com/
+
+Functionalitati:
+
+- Interfata user friendly : design simplu, placut
+meniu orizontal - putem deschide un alt meniu vertical din sigla de meniu
+meniul si pagina se minimizeaza/maximizeaza in functie de dimensiunile browserului
+posibilitate de scroll down atunci cand browserul este minimizat
+navigare intuitiva
+usor de folosit deoarece direct din home page putem avea acces la 2 ramuri importante: Dev or Business
+- Titlurile sunt intuitive, descrierile sunt scurte si la obiect - din home page putem deschide ramurile cele mai de interes
+- Sigla de stackoverflow ne duce inapoi la Home Page.
+- cautare usoara: un search box prin care poti cauta dupa anumite cuvinte cheie/ titluri etc
+
+
+Dev: 
+- 'Public Q&A' - posibilitatea de a cauta raspunsuri ori a intreba despre anumite probleme, de a marca vota raspunsurile cele mai potrivite ori de a le marca cu o bifa pe cele bune si verificate
+-'Private Q&A'  posibilitatea de a folosi optiunea gratis nu apare ca un spam utilizatorului - e discreta
+- 'Find a Job' - ofera o buna metoda de a promova/ a gasi job-uri
+
+For Business: are 3 taburi importante de interes, de unde putem naviga usor spre alte informatii
+
+- site cu optiuni basic pentru cei ce nu vor/ nu au nevoie de un abonament ori posibilitatea de extindere a facilitatilor prin achizitionarea unuia
+
+- site securizat
+
+- Log In/ Sign In : ofera posibilitatea de a folosi conturile de gmail, github si facebook. Asemeni si la sign up ori ne putem crea noi contul
+
