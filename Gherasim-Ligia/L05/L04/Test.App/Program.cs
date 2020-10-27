@@ -16,7 +16,7 @@ namespace Test.App
         {
 
             //var question = AskAQuestion.Create("somet");
-            var questionResult = UnverifiedQuestion.Create("Create a question for stack Overflow :)", new string[] { "C#", "WorkflowCode", "Visual Studio" });
+            var questionResult = UnverifiedQuestion.Create(":)", new string[] { "C#", "WorkflowCode", "Visual Studio" });
 
             questionResult.Match(
                 Succ: question =>
