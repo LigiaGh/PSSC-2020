@@ -3,20 +3,35 @@ using LanguageExt.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
 {
     public interface IReply { }
 
-    public class Reply
+    public class Reply : IReply
     {
 
         public string IdOwner { get; private set; }
         public string OwnerEmail { get; private set; }
+
+        [Required]
         public string IdAuthor { get; private set; }
         public string AuthorEmail { get; private set; }
-        public string ReplayBody { get; private set; }
+        [Required]
+        public string ReplyBody { get; private set; }
         public DateTime CreatedDate { get; set; }
+
+        public Reply(string idOwner, string ownerEmail, string idAuthor, string authorEmail, string replyBody, DateTime createdDate)
+        {
+            IdOwner = idOwner;
+            OwnerEmail = ownerEmail;
+            IdAuthor = idAuthor;
+            AuthorEmail = authorEmail;
+            ReplyBody = replyBody;
+            CreatedDate = createdDate;
+        }
     }
 
     public class UnverifiedQuestionReply : IReply
@@ -28,6 +43,7 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
             ReplyBody = replyBody;
         }
 
+        //doar proprietati si factory 
         public static Result<UnverifiedQuestionReply> Create(string response)
         {
             if (IsQuestionResponseValid(response))
@@ -40,9 +56,9 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
             }
         }
 
-        private static bool IsQuestionResponseValid(string response)
+        private static bool IsQuestionResponseValid(string reply)
         {
-            if (response.Length <= 1000 && response.Length >= 10)
+            if (reply.Length <= 1000 && reply.Length >= 10)
             {
                 return true;
             }
@@ -50,13 +66,34 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
         }
     }
 
-    public class VerifiedQuestionResult : IReply
+    public class VerifiedQuestionReply : IReply
     {
         public string ReplyTextBody { get; private set; }
 
-        internal VerifiedQuestionResult(string replyTextBody)
+        internal VerifiedQuestionReply(string replyTextBody)
         {
             ReplyTextBody = replyTextBody;
         }
     }
+    public class SendAckToOwner : IReply
+    {
+
+    }
+
+    public class PublishQuestionReply: IReply
+    {
+
+    }
+    //public class LanguageCheckService
+    //{
+
+    //    public Task DoLanguageCheckService(VerifiedQuestionReply reply)
+    //    {
+    //        //if (reply.ReplyTextBody.Contains("^"))
+    //        //    return Task.;
+    //        //invoke the send logic
+
+    //        return Task.CompletedTask;
+    //    }
+    //}
 }

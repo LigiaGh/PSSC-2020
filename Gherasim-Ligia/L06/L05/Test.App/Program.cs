@@ -8,20 +8,20 @@ namespace Test.App
     {
         static void Main(string[] args)
         {
-            var replyResult = UnverifiedQuestionReply.Create("tet.com");
+            var replyResult = UnverifiedQuestionReply.Create("teeeeeeeeeeeeet.com");
 
 
             replyResult.Match(
-                    Succ: email =>
+                    Succ: reply =>
                     {
                         //SendResetPasswordLink(email);
 
-                        Console.WriteLine($"Your answer is valid");
+                        Console.WriteLine($"The reply body \n{reply}\npassed the length check");
                         return Unit.Default;
                     },
                     Fail: ex =>
                     {
-                        Console.WriteLine($"Invalid email address. Reason: {ex.Message}");
+                        Console.WriteLine($"{ex.Message}");
                         return Unit.Default;
                     }
                 );

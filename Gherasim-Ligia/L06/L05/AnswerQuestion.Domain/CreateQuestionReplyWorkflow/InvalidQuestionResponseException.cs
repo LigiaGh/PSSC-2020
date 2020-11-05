@@ -7,7 +7,7 @@
         {
         }
 
-        public InvalidQuestionResponseException(string response) : base($"The response body should be between 10 and 1000 chars.\n Please review your:\n{response}.")
+        public InvalidQuestionResponseException(string reply) : base($"The reply body should be between 10 and 1000 chars.\n Please review your solution:\n{reply}.")
         {
         }
     }
