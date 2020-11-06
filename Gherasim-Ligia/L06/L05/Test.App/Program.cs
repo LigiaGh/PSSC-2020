@@ -14,8 +14,7 @@ namespace Test.App
             replyResult.Match(
                     Succ: reply =>
                     {
-                        //SendResetPasswordLink(email);
-
+                        VerifyLanguageCheck(reply);
                         Console.WriteLine($"The reply body \n{reply}\npassed the length check");
                         return Unit.Default;
                     },
@@ -30,21 +29,22 @@ namespace Test.App
             Console.ReadLine();
         }
 
-        //private static void SendResetPasswordLink(UnverifiedEmail email)
-        //{
-        //    var verifiedEmailResult = new VerifyEmailService().VerifyEmail(email);
-        //    verifiedEmailResult.Match(
-        //            verifiedEmail =>
-        //            {
-        //                new RestPasswordService().SendRestPasswordLink(verifiedEmail).Wait();
-        //                return Unit.Default;
-        //            },
-        //            ex =>
-        //            {
-        //                Console.WriteLine("Email address could not be verified");
-        //                return Unit.Default;
-        //            }
-        //        );
-        //}
+        private static void VerifyLanguageCheck(UnverifiedQuestionReply reply)
+        {
+            var verifiedQuestionReplyResult = new VerifyQuestionReplyService().VerifyQuestionSize(reply);
+            verifiedQuestionReplyResult.Match(
+                    verifiedReply =>
+                    {
+                        //new RestPasswordService().SendRestPasswordLink(verifiedEmail).Wait();
+                        //aici pot trimite notificarile catre owner and so on
+                        return Unit.Default;
+                    },
+                    ex =>
+                    {
+                        Console.WriteLine("Email address could not be verified");
+                        return Unit.Default;
+                    }
+                );
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
             ReplyBody = replyBody;
         }
 
-        //doar proprietati si factory 
+        //doar proprietati si factory method
         public static Result<UnverifiedQuestionReply> Create(string response)
         {
             if (IsQuestionResponseValid(response))
@@ -84,16 +84,5 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
     {
 
     }
-    //public class LanguageCheckService
-    //{
 
-    //    public Task DoLanguageCheckService(VerifiedQuestionReply reply)
-    //    {
-    //        //if (reply.ReplyTextBody.Contains("^"))
-    //        //    return Task.;
-    //        //invoke the send logic
-
-    //        return Task.CompletedTask;
-    //    }
-    //}
 }
