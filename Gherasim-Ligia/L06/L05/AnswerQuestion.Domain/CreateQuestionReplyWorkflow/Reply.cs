@@ -12,12 +12,14 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
 
     public class Reply : IReply
     {
-
+        [Required]
         public string IdOwner { get; private set; }
+        [Required]
         public string OwnerEmail { get; private set; }
 
         [Required]
         public string IdAuthor { get; private set; }
+        [Required]
         public string AuthorEmail { get; private set; }
         [Required]
         public string ReplyBody { get; private set; }
@@ -46,23 +48,7 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
         //doar proprietati si factory method
         public static Result<UnverifiedQuestionReply> Create(string response)
         {
-            if (IsQuestionResponseValid(response))
-            {
                 return new UnverifiedQuestionReply(response);
-            }
-            else
-            {
-                return new Result<UnverifiedQuestionReply>(new InvalidQuestionResponseException(response));
-            }
-        }
-
-        private static bool IsQuestionResponseValid(string reply)
-        {
-            if (reply.Length <= 1000 && reply.Length >= 10)
-            {
-                return true;
-            }
-            return false;
         }
     }
 
@@ -77,11 +63,31 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
     }
     public class SendAckToOwner : IReply
     {
+        public string OwnerEmail { get; private set; }
+        public string DefaultNewReplyMessage { get; private set; }
+        public string IdAuthor { get; private set; }
+        public SendAckToOwner( string ownerEmail, string message)
+        {
+            OwnerEmail = ownerEmail;
+            DefaultNewReplyMessage = message;
+        }
 
     }
 
-    public class PublishQuestionReply: IReply
+    public class PublishQuestionReply : IReply
     {
+        public string AuthorEmail { get; private set; }
+        public string Message { get; private set; }
+        public Guid IdQuestion { get; private set; }
+        public bool IsPosted { get; private set; }
+
+        public PublishQuestionReply(string authorEmail, string message, Guid idQuestion, bool isPosted)
+        {
+            AuthorEmail = authorEmail;
+            Message = message;
+            IdQuestion = idQuestion;
+            IsPosted = isPosted;
+        }
 
     }
 

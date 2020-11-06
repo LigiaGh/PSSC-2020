@@ -1,5 +1,6 @@
 ﻿using LanguageExt;
 using ReplayQuestion.Domain.CreateQuestionReplyWorkflow;
+using ReplyQuestion.Domain.CreateQuestionReplyWorkflow;
 using System;
 
 namespace Test.App
@@ -8,10 +9,11 @@ namespace Test.App
     {
         static void Main(string[] args)
         {
-            var replyResult = UnverifiedQuestionReply.Create("teeeeeeeeeeeeet.com");
+            var replyInfo = new Reply("ownerUser", "ownerUser@test.te", "authorUser", "authorUser@test.te", "Please write down your answer.", DateTime.Now);
+            var check = UnverifiedQuestionReply.Create(replyInfo.ReplyBody);
 
 
-            replyResult.Match(
+            check.Match(
                     Succ: reply =>
                     {
                         VerifyLanguageCheck(reply);
@@ -31,17 +33,17 @@ namespace Test.App
 
         private static void VerifyLanguageCheck(UnverifiedQuestionReply reply)
         {
-            var verifiedQuestionReplyResult = new VerifyQuestionReplyService().VerifyQuestionSize(reply);
+            var verifiedQuestionReplyResult = new VerifyQuestionReplyService.VerifyQuestionReplySize(reply);
             verifiedQuestionReplyResult.Match(
                     verifiedReply =>
                     {
-                        //new RestPasswordService().SendRestPasswordLink(verifiedEmail).Wait();
+                        //
                         //aici pot trimite notificarile catre owner and so on
                         return Unit.Default;
                     },
                     ex =>
                     {
-                        Console.WriteLine("Email address could not be verified");
+                        Console.WriteLine($"{ex.Message}");
                         return Unit.Default;
                     }
                 );

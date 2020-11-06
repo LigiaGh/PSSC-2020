@@ -2,19 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ReplyQuestion.Domain.CreateQuestionReplyWorkflow
 {
     class LanguageCheckService
     {
-        public Task DoLanguageCheckService(VerifiedQuestionReply reply)
+        public bool DoLanguageCheckService(VerifiedQuestionReply reply)
         {
-            //if (reply.ReplyTextBody.Contains("^"))
-            //    return Task.;
-            //invoke the send logic
+            if (reply.ReplyTextBody.Contains("^"))
+                return false;
 
-            return Task.CompletedTask;
+            return true;
         }
     }
 }
