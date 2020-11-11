@@ -9,7 +9,8 @@ namespace Test.App
     {
         static void Main(string[] args)
         {
-            var replyInfo = new Reply("ownerUser", "ownerUser@test.te", "authorUser", "authorUser@test.te", "Please write down your answer.", DateTime.Now);
+            //var replyInfo = new Reply("ownerUser", "ownerUser@test.te", "authorUser", "authorUser@test.te", "Please write down your answer.", DateTime.Now);
+            var replyInfo = new Reply("ownerUser", "ownerUser@test.te", "authorUser", "authorUser@test.te", "Pleas", DateTime.Now);
             var check = UnverifiedQuestionReply.Create(replyInfo.ReplyBody);
 
 
@@ -33,12 +34,12 @@ namespace Test.App
 
         private static void VerifyLanguageCheck(UnverifiedQuestionReply reply)
         {
-            var verifiedQuestionReplyResult = new VerifyQuestionReplyService.VerifyQuestionReplySize(reply);
-            verifiedQuestionReplyResult.Match(
+            var verifiedQuestionReplyResult = new VerifyQuestionReplyService();
+            verifiedQuestionReplyResult.VerifyQuestionReplyLength(reply).Match(
                     verifiedReply =>
                     {
                         //
-                        //aici pot trimite notificarile catre owner and so on
+                        //aici pot trimite notificarile catre owner su author
                         return Unit.Default;
                     },
                     ex =>

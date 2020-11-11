@@ -56,9 +56,9 @@ namespace ReplayQuestion.Domain.CreateQuestionReplyWorkflow
     {
         public string ReplyTextBody { get; private set; }
 
-        internal VerifiedQuestionReply(string replyTextBody)
+        internal VerifiedQuestionReply(UnverifiedQuestionReply replyTextBody)
         {
-            ReplyTextBody = replyTextBody;
+            ReplyTextBody = replyTextBody.ReplyBody;
         }
     }
     public class SendAckToOwner : IReply

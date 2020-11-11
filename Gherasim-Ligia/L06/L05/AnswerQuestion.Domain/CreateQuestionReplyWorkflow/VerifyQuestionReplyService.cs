@@ -8,15 +8,15 @@ namespace ReplyQuestion.Domain.CreateQuestionReplyWorkflow
 {
     public class VerifyQuestionReplyService
     {
-        public Result<VerifiedQuestionReply> VerifyQuestionReplySize(string reply)
+        public Result<VerifiedQuestionReply> VerifyQuestionReplyLength(UnverifiedQuestionReply replyBody)
         {
-            if (IsQuestionResponseValid(reply))
+            if (IsQuestionResponseValid(replyBody.ReplyBody))
             {
-                return new VerifiedQuestionReply(reply);
+                return new VerifiedQuestionReply(replyBody);
             }
             else
             {
-                return new Result<VerifiedQuestionReply>(new InvalidQuestionResponseException(reply));
+                return new Result<VerifiedQuestionReply>(new InvalidQuestionResponseException(replyBody.ReplyBody));
             }
 
         }
