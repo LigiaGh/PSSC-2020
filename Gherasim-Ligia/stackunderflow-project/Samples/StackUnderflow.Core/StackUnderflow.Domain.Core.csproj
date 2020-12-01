@@ -11,8 +11,4 @@
     <PackageReference Include="CSharp.Choices" Version="1.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contexts\Question\" />
-  </ItemGroup>
-
 </Project>
