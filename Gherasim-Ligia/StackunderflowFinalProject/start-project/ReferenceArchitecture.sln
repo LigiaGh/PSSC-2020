@@ -36,9 +36,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Database", "2. Database"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Grains", "4. Grains", "{5B944B83-A041-4591-B4A4-2B79F442BF4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainInterfaces", "GrainInterfaces\GrainInterfaces.csproj", "{5598878B-7187-4856-8322-2C1E3ED0F969}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainInterfaces", "GrainInterfaces\GrainInterfaces.csproj", "{5598878B-7187-4856-8322-2C1E3ED0F969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainImplementation", "GrainImplementation\GrainImplementation.csproj", "{081C60D6-5B49-48FE-9049-8CB6707251B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrainImplementation", "GrainImplementation\GrainImplementation.csproj", "{081C60D6-5B49-48FE-9049-8CB6707251B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
