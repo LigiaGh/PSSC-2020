@@ -39,9 +39,9 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
             //public bool CheckSyntax { get; set; }
             public string Reason { get; private set; }
 
-            public InvalidQuestion(string Reason)
+            public InvalidQuestion(string reason)
             {
-                Reason = Reason;
+                Reason = reason;
             }
             public object Clone() => this.ShallowClone();
         }

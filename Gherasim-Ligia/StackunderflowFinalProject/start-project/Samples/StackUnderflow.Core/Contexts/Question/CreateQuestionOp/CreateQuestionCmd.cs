@@ -11,18 +11,17 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
     {
         public CreateQuestionCmd(int questionId, Guid userId, string title, string postText, ICollection<PostTag> postTag)
         {
-            QuestionId = questionId;
-            UserId = userId; // PostedBy
-            //UserEmail = userEmail; // User
+            PostId = questionId;
+            TenantId = userId;
             Title = title;
             PostText = postText;//body
             PostTag = postTag;//tags
         }
 
         [GuidNotEmpty]
-        public int QuestionId { get; set; }
+        public int PostId { get; set; }
         [GuidNotEmpty]
-        public Guid UserId { get; set; }
+        public Guid TenantId { get; set; }
 
         //[Required]
         //public string UserEmail { get; set; }
