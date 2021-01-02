@@ -21,20 +21,20 @@ namespace StackUnderflow.API.AspNetCore.Controllers
     [Route("question")]
     public class QuestionController : Controller
     {
-            private readonly IInterpreterAsync _interpreter;
-            private readonly StackUnderflowContext _dbContext;
-            private readonly IClusterClient _client;
+        private readonly IInterpreterAsync _interpreter;
+        private readonly StackUnderflowContext _dbContext;
+        private readonly IClusterClient _client;
 
-            public QuestionController(IInterpreterAsync interpreter, StackUnderflowContext dbContext, IClusterClient client)
-            {
-                _interpreter = interpreter;
-                _dbContext = dbContext;
-                _client = client;
-            }
+        public QuestionController(IInterpreterAsync interpreter, StackUnderflowContext dbContext, IClusterClient client)
+        {
+            _interpreter = interpreter;
+            _dbContext = dbContext;
+            _client = client;
+        }
 
-            [HttpPost("post")]
-            public async Task<IActionResult> CreateQuestionAsync([FromBody] CreateQuestionCmd createQuestionCmd)
-            {
+        [HttpPost("postquestion")]
+        public async Task<IActionResult> CreateQuestionAsync([FromBody] CreateQuestionCmd createQuestionCmd)
+        {
             QuestionWriteContext ctx = new QuestionWriteContext(
                 new EFList<Post>(_dbContext.Post));
 
@@ -42,15 +42,15 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             dependencies.SendInvitationEmail = SendEmail;
 
             var expr = from createQuestionResult in QuestionDomain.CreateQuestion(createQuestionCmd)
-                           select new { createQuestionResult};
+                       select new { createQuestionResult };
 
-                var r = await _interpreter.Interpret(expr, ctx, dependencies);
-                _dbContext.SaveChanges();
-                return r.createQuestionResult.Match(
-                    created => (IActionResult)Ok(created.Question.PostId),
-                    notCreated => StatusCode(StatusCodes.Status500InternalServerError, "Question could not be created."),//todo return 500 (),
-                invalidRequest => BadRequest("Invalid request."));
-            }
+            var r = await _interpreter.Interpret(expr, ctx, dependencies);
+            _dbContext.SaveChanges();
+            return r.createQuestionResult.Match(
+                created => Ok(created.Question.PostId),
+                notCreated => StatusCode(StatusCodes.Status500InternalServerError, "Question could not be created."),//todo return 500 (),
+            invalidRequest => BadRequest("Invalid request."));
+        }
 
         private TryAsync<InvitationAcknowledgement> SendEmail(InvitationLetter letter)
         => async () =>
@@ -60,5 +60,5 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             return new InvitationAcknowledgement(Guid.NewGuid().ToString());
         };
     }
-    }
+}
 

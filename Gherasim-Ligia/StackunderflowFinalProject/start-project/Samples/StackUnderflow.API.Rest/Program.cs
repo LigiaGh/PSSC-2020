@@ -26,7 +26,7 @@ namespace FakeSO.API.Rest
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .UseOrleans(siloBuilder =>
+                .UseOrleans(siloBuilder => // vrem sa configuram un cluster de orleans in interiorul aplicatiei web
                 {
                     siloBuilder.UseLocalhostClustering()
                     .Configure<ClusterOptions>(options =>

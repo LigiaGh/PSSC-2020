@@ -9,7 +9,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
 {
     public struct CreateQuestionCmd
     {
-        public CreateQuestionCmd(int questionId, Guid userId, string title, string postText, ICollection<PostTag> postTag)
+        public CreateQuestionCmd(int questionId, int userId, string title, string postText, string postTag)
         {
             PostId = questionId;
             TenantId = userId;
@@ -18,10 +18,10 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
             PostTag = postTag;//tags
         }
 
-        [GuidNotEmpty]
+        [Required]
         public int PostId { get; set; }
-        [GuidNotEmpty]
-        public Guid TenantId { get; set; }
+        [Required]
+        public int TenantId { get; set; }
 
         //[Required]
         //public string UserEmail { get; set; }
@@ -30,9 +30,9 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
         public string Title { get; set; }
         [Required]
         [MinLength(30), MaxLength(3000)]
-        public string PostText { get; set; } //PostText
+        public string PostText { get; set; }
         [Required]
-        public ICollection<PostTag> PostTag { get; set; } //postTag
+        public string PostTag { get; set; } 
     }
 }
 

@@ -26,20 +26,23 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
         public class QuestionNotCreated : ICreateQuestionResult
         {
             public bool OperationCanceled { get; set; }
+            public string Reason { get; private set; }
 
-            public QuestionNotCreated(bool operationCanceled)
+
+            public QuestionNotCreated(bool operationCanceled, string reason)
             {
                 OperationCanceled = operationCanceled;
+                Reason = reason;
             }
             public object Clone() => this.ShallowClone();
         }
 
-        public class InvalidQuestion : ICreateQuestionResult
+        public class InvalidRequest : ICreateQuestionResult
         {
             //public bool CheckSyntax { get; set; }
             public string Reason { get; private set; }
 
-            public InvalidQuestion(string reason)
+            public InvalidRequest(string reason)
             {
                 Reason = reason;
             }
