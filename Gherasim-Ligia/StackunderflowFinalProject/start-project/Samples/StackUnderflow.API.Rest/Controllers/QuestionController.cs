@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using StackUnderflow.Domain.Core.Contexts.Question;
 using StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp;
+using StackUnderflow.Domain.Core.Contexts.Question.SendUserConfirmationOp;
 using StackUnderflow.Domain.Schema.Backoffice.InviteTenantAdminOp;
 using StackUnderflow.EF.Models;
 using System;
@@ -29,17 +30,18 @@ namespace StackUnderflow.API.AspNetCore.Controllers
         {
             _interpreter = interpreter;
             _dbContext = dbContext;
-            _client = client;
+            _client = client; // ma contectez cu clientul la clusterul meu
         }
 
         [HttpPost("postquestion")]
-        public async Task<IActionResult> CreateQuestionAsync([FromBody] CreateQuestionCmd createQuestionCmd)
+        public async Task<IActionResult> CreateQuestionAsyncAndSendEmail([FromBody] CreateQuestionCmd createQuestionCmd)
         {
             QuestionWriteContext ctx = new QuestionWriteContext(
                 new EFList<Post>(_dbContext.Post));
 
             var dependencies = new QuestionDependencies();
-            dependencies.SendInvitationEmail = SendEmail;
+            dependencies.SendConfirmationEmail = SendEmail;
+            dependencies.SendConfirmationEmail = (ConfirmationLetter letter) => async () => new ConfirmationAcknowledgement(Guid.NewGuid().ToString());
 
             var expr = from createQuestionResult in QuestionDomain.CreateQuestion(createQuestionCmd)
                        select new { createQuestionResult };
@@ -48,16 +50,16 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             _dbContext.SaveChanges();
             return r.createQuestionResult.Match(
                 created => Ok(created.Question.PostId),
-                notCreated => StatusCode(StatusCodes.Status500InternalServerError, "Question could not be created."),//todo return 500 (),
+                 notCreated => StatusCode(StatusCodes.Status500InternalServerError, "Question could not be created."),//todo return 500 (),
             invalidRequest => BadRequest("Invalid request."));
         }
 
-        private TryAsync<InvitationAcknowledgement> SendEmail(InvitationLetter letter)
+        private TryAsync<ConfirmationAcknowledgement> SendEmail(ConfirmationLetter letter)
         => async () =>
         {
             var emialSender = _client.GetGrain<IEmailSender>(0);
             await emialSender.SendEmailAsync(letter.Letter);
-            return new InvitationAcknowledgement(Guid.NewGuid().ToString());
+            return new ConfirmationAcknowledgement(Guid.NewGuid().ToString());
         };
     }
 }

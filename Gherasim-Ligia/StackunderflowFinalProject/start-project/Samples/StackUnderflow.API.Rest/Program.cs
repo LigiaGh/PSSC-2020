@@ -28,14 +28,15 @@ namespace FakeSO.API.Rest
                 })
                 .UseOrleans(siloBuilder => // vrem sa configuram un cluster de orleans in interiorul aplicatiei web
                 {
+                    //pornesc un server intr-o aplicatie consola
                     siloBuilder.UseLocalhostClustering()
-                    .Configure<ClusterOptions>(options =>
+                    .Configure<ClusterOptions>(options => //configurarea clusterului
                      {
                          options.ClusterId = "dev";
                          options.ServiceId = "OrleansBasics";
                      })
                     .ConfigureApplicationParts(
-                        parts => parts.AddApplicationPart(typeof(EmailSenderGrain).Assembly)
+                        parts => parts.AddApplicationPart(typeof(EmailSenderGrain).Assembly) // unde se afla grain-ul nostru
                                 .WithReferences());
                 });
     }
