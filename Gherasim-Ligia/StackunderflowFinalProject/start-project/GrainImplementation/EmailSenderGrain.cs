@@ -10,8 +10,6 @@ namespace GrainImplementation
     {
         public Task<string> SendEmailAsync(string message)
         {
-            //todo send e-mail
-
             return Task.FromResult(message);
         }
     }

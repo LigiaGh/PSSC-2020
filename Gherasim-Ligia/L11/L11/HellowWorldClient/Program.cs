@@ -61,6 +61,7 @@ namespace HellowWorldClient
         private static async Task DoClientWork(IClusterClient client)
         {
             // example of calling grains from the initialized client
+            
             var friend = client.GetGrain<IHello>(0); // cheia grainului // acelasi id 2 grinuri -> merg la acelasi obiect
             var response = await friend.SayHello("Good morning, HelloGrain!");
             Console.WriteLine($"\n\n{response}\n\n");

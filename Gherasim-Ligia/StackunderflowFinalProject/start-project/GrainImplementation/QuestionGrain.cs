@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using GrainInterfaces;
+using Orleans.Streams;
 using StackUnderflow.EF.Models;
 
 
 namespace GrainImplementation
 {
-    public class QuestionGrain: Orleans.Grain
+    public class QuestionGrain: Orleans.Grain, IEmailQuestionSender
     {
         private StackUnderflowContext _dbContext;
         private QuestionGrain state;
@@ -16,14 +18,22 @@ namespace GrainImplementation
             _dbContext = dbContext;
         }
 
-        public override Task OnActivateAsync()
+        public override async Task OnActivateAsync()
         {
             //read state from Db where postid = or parentid=
             //subscribe to reply states
-            return base.OnActivateAsync();
+            var streamProvider = GetStreamProvider("SMSProvider");
+            var stream = streamProvider.GetStream<string>(Guid.Empty, "LETTER");
+            await stream.SubscribeAsync((IAsyncObserver<string>)this);
+            await base.OnActivateAsync();
         }
 
-        //public GetQuestionWithReplys()
+        public Task<string> SendConfirmationEmailAsync(string message)
+        {
+            return Task.FromResult(message);
+        }
+
+        //public GetQuestionWithReplies()
         //{
 
         //}

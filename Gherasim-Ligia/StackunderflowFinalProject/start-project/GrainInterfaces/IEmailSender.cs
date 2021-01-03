@@ -10,4 +10,9 @@ namespace GrainInterfaces
     {
         Task<string> SendEmailAsync(string message);
     }
+
+    public interface IEmailQuestionSender : IGrainWithGuidKey
+    {
+        Task<string> SendConfirmationEmailAsync(string message);
+    }
 }

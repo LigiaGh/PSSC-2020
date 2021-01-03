@@ -5,40 +5,39 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
+namespace StackUnderflow.Domain.Core.Contexts.Question.GetQuestionRepyOp
 {
     [AsChoice]
-    public static partial class CreateQuestionResult
+    public static partial class GetQuestionReplyResult
     {
-        public interface ICreateQuestionResult : IDynClonable {}
+        public interface IGetQuestionReplyResult: IDynClonable { }
 
-        public class QuestionCreated : ICreateQuestionResult
+        public class ReplyReturned: IGetQuestionReplyResult
         {
-            public Post Question { get; }
+            public Post Replies { get; }
 
-            public QuestionCreated(Post question)
+            public ReplyReturned(Post replies)
             {
-                Question = question;
+                Replies = replies;
             }
             public object Clone() => this.ShallowClone();
         }
 
-        public class QuestionNotCreated : ICreateQuestionResult
+        public class RepliesNotReturned : IGetQuestionReplyResult
         {
             public bool OperationCanceled { get; set; }
             public string Reason { get; private set; }
 
 
-            public QuestionNotCreated(bool operationCanceled, string reason)
+            public RepliesNotReturned(bool operationCanceled, string reason)
             {
                 OperationCanceled = operationCanceled;
                 Reason = reason;
             }
-
             public object Clone() => this.ShallowClone();
         }
 
-        public class InvalidRequest : ICreateQuestionResult
+        public class InvalidRequest : IGetQuestionReplyResult
         {
             //public bool CheckSyntax { get; set; }
             public string Reason { get; private set; }
@@ -49,6 +48,5 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
             }
             public object Clone() => this.ShallowClone();
         }
-
     }
 }

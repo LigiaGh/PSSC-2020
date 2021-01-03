@@ -1,21 +1,21 @@
 ﻿using EarlyPay.Primitives.ValidationAttributes;
-using StackUnderflow.EF.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
+namespace StackUnderflow.Domain.Core.Contexts.Question.GetQuestionRepyOp
 {
-    public struct CreateQuestionCmd
+    public class GetQuestionReplyCmd
     {
-        public CreateQuestionCmd(int questionId, int userId, string title, string postText) //, HashSet<PostTag> postTag
+        public GetQuestionReplyCmd(int questionId, int userId, Guid postedby, string postText, DateTime dateCreated, bool acceptedAnswer)
         {
             PostId = questionId;
             TenantId = userId;
-            Title = title;
+            PostedBy = postedby;
             PostText = postText;//body
-           // PostTag = postTag;//tags
+            DateCreated = dateCreated;
+            AcceptedAnswer = acceptedAnswer;
         }
 
         [Required]
@@ -23,16 +23,22 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestionOp
         [Required]
         public int TenantId { get; set; }
 
+        [GuidNotEmpty]
+        public Guid PostedBy { get; set; }
+
         //[Required]
         //public string UserEmail { get; set; }
         [Required]
-        [MinLength(10), MaxLength(300)]
-        public string Title { get; set; }
+        public bool AcceptedAnswer { get; set; }
+
+        [GuidNotEmpty]
+        public DateTime DateCreated { get; set; }
+
         [Required]
         [MinLength(30), MaxLength(3000)]
         public string PostText { get; set; }
         //[Required]
-        //public HashSet<PostTag> PostTag { get; set; } 
+        // public string PostTag { get; set; } 
     }
 }
 

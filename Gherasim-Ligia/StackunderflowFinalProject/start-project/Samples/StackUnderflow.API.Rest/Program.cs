@@ -37,7 +37,8 @@ namespace FakeSO.API.Rest
                      })
                     .ConfigureApplicationParts(
                         parts => parts.AddApplicationPart(typeof(EmailSenderGrain).Assembly) // unde se afla grain-ul nostru
-                                .WithReferences());
+                                .WithReferences())
+                    .AddSimpleMessageStreamProvider("SMSProvider", options => { options.FireAndForgetDelivery = true; });
                 });
     }
 }
