@@ -19,9 +19,9 @@ namespace OrleansHelloWorld
         {
             try
             {
-                var host = await StartSilo();
+                var host = await StartSilo(); // porneste runtime-ul de orleans
                 Console.WriteLine("\n\n Press Enter to terminate...\n\n");
-                Console.ReadLine();
+                Console.ReadLine(); // asteapta enter si opreste cluster
 
                 await host.StopAsync();
 
@@ -36,21 +36,23 @@ namespace OrleansHelloWorld
 
         private static async Task<ISiloHost> StartSilo()
         {
-            // define the cluster configuration
+            // define the cluster configuration // pornirea clusterului
             var builder = new SiloHostBuilder()
-                .UseLocalhostClustering()
-                .Configure<ClusterOptions>(options =>
+                .UseLocalhostClustering() // construim un builder pe localhost - o singura masina, cea locala
+                .Configure<ClusterOptions>(options => // unde ruleaza si cum se va numi( cum il pot adresa)
                 {
                     options.ClusterId = "dev";
                     options.ServiceId = "OrleansBasics";
                 })
+                // vreau sa imi cauti grainurile in assembly-ul unde e HelloGrain 
+                // parts -> spun unde sunt grainurile
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(HelloGrain).Assembly).WithReferences())
-                .ConfigureLogging(logging => logging.AddConsole())
+                .ConfigureLogging(logging => logging.AddConsole()) // partea de logging
                 .AddSimpleMessageStreamProvider("SMSProvider", options => { options.FireAndForgetDelivery = true; })
                 .AddMemoryGrainStorage("PubSubStore");
 
-            var host = builder.Build();
-            await host.StartAsync();
+            var host = builder.Build(); // build
+            await host.StartAsync(); // pornesc clusterul
             return host;
         }
     }

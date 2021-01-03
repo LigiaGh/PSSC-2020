@@ -19,10 +19,10 @@ namespace HellowWorldClient
         private static async Task<int> RunMainAsync()
         {
             try
-            {
-                using (var client = await ConnectClient())
+            { 
+                using (var client = await ConnectClient())  // se dezaloca
                 {
-                    await DoClientWork(client);
+                    await DoClientWork(client); // creem un client care se conecteaza la cluster
                     Console.ReadKey();
                 }
 
@@ -42,17 +42,18 @@ namespace HellowWorldClient
         {
             IClusterClient client;
             client = new ClientBuilder()
-                .UseLocalhostClustering()
+                .UseLocalhostClustering() // configuram un cluster unde se conecteaza clientul noastra
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = "dev";
                     options.ServiceId = "OrleansBasics";
                 })
+                // clientul n-are nevoie sa stie de implementari numai de intefete
                 .ConfigureLogging(logging => logging.AddConsole())
                 .AddSimpleMessageStreamProvider("SMSProvider", options => { options.FireAndForgetDelivery = true; })
                 .Build();
 
-            await client.Connect();
+            await client.Connect(); //clientul e pregatit sa apele grainuri din clusterul local
             Console.WriteLine("Client successfully connected to silo host \n");
             return client;
         }
@@ -60,7 +61,7 @@ namespace HellowWorldClient
         private static async Task DoClientWork(IClusterClient client)
         {
             // example of calling grains from the initialized client
-            var friend = client.GetGrain<IHello>(0);
+            var friend = client.GetGrain<IHello>(0); // cheia grainului // acelasi id 2 grinuri -> merg la acelasi obiect
             var response = await friend.SayHello("Good morning, HelloGrain!");
             Console.WriteLine($"\n\n{response}\n\n");
 

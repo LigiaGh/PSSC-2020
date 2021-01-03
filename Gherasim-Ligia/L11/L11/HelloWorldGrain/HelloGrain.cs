@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace HelloWorldGrain
 {
+    // implementeaza interfata IHello si extinde clasa Orlean.Grain
+    //poate fi apelata de la distanta
     public class HelloGrain : Orleans.Grain, IHello, IAsyncObserver<string>
     {
         private ILogger _logger;
@@ -17,7 +19,7 @@ namespace HelloWorldGrain
         {
             _logger = logger;
         }
-        public Task<string> SayHello(string greeting)
+        public Task<string> SayHello(string greeting) // primeste un salut si logheaza un rezultat
         {
             _logger.LogInformation($"\n SayHello message received: greeting = '{greeting}'");
             return Task.FromResult($"\n Client said: '{greeting}', so HelloGrain says: Hello!");
