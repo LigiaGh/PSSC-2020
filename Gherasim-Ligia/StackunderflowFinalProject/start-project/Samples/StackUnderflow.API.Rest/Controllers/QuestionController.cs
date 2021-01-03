@@ -30,8 +30,15 @@ namespace StackUnderflow.API.AspNetCore.Controllers
         {
             _interpreter = interpreter;
             _dbContext = dbContext;
-            _client = client; // ma contectez cu clientul la clusterul meu
+            _client = client;
         }
+
+        //[HttpGet("getquestion")]
+        //public async Task<IActionResult> CreateQuestionAsyncAndSendEmail(int questionId)
+        //{
+        //    //get ref to question gri
+        //    //grain.GetQuestion
+        //}
 
         [HttpPost("postquestion")]
         public async Task<IActionResult> CreateQuestionAsyncAndSendEmail([FromBody] CreateQuestionCmd createQuestionCmd)
@@ -44,11 +51,11 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             dependencies.SendConfirmationEmail = (ConfirmationLetter letter) => async () => new ConfirmationAcknowledgement(Guid.NewGuid().ToString());
 
             var expr = from createQuestionResult in QuestionDomain.CreateQuestion(createQuestionCmd)
-                       select new { createQuestionResult };
+                       select createQuestionResult;
 
             var r = await _interpreter.Interpret(expr, ctx, dependencies);
             _dbContext.SaveChanges();
-            return r.createQuestionResult.Match(
+            return r.Match(
                 created => Ok(created.Question.PostId),
                  notCreated => StatusCode(StatusCodes.Status500InternalServerError, "Question could not be created."),//todo return 500 (),
             invalidRequest => BadRequest("Invalid request."));
@@ -61,6 +68,14 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             await emialSender.SendEmailAsync(letter.Letter);
             return new ConfirmationAcknowledgement(Guid.NewGuid().ToString());
         };
+
+        // [HttpPost("question/{questionId}")]
+        //public async Task<IActionResult> CreateReply(Int questionId, [FromBody] CreateReplyCmd createQuestionCmd)
+        //{
+        //    // o noua comanda, o operatiune de comanda si din ea sa trimitem un mesaj prin streamul de eventuri ca sa ne dam seama ca s-a create un nou reply
+        //    // trimitem un mesaj printr-un stream catre un grain
+        //    // id-ul grainului este id-ul intrebarii
+        //}
     }
 }
 
