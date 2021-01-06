@@ -33,7 +33,7 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             _client = client;
         }
 
-        //[HttpGet("getquestion")]
+        //[HttpGet("question/{questionId}")]
         //public async Task<IActionResult> CreateQuestionAsyncAndSendEmail(int questionId)
         //{
         //    //get ref to question gri
@@ -44,8 +44,7 @@ namespace StackUnderflow.API.AspNetCore.Controllers
         public async Task<IActionResult> CreateQuestionAsyncAndSendEmail([FromBody] CreateQuestionCmd createQuestionCmd)
         {
             QuestionWriteContext ctx = new QuestionWriteContext(
-                new EFList<Post>(_dbContext.Post),
-                new EFList<User>(_dbContext.User));
+                new EFList<Post>(_dbContext.Post));
 
             var dependencies = new QuestionDependencies();
             dependencies.SendConfirmationEmail = (ConfirmationLetter letter) => async () => new ConfirmationAcknowledgement(Guid.NewGuid().ToString());
@@ -75,7 +74,7 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             return new ConfirmationAcknowledgement(Guid.NewGuid().ToString());
         };
 
-        [HttpPost("question/{questionId}")]
+        [HttpPost("reply")]
         public async Task<IActionResult> CreateReply(int questionId, [FromBody] GetQuestionReplyCmd getQuestionReplyCmd)
         {
             // o noua comanda, o operatiune de comanda si din ea sa trimitem un mesaj prin streamul de eventuri ca sa ne dam seama ca s-a create un nou reply
@@ -84,7 +83,8 @@ namespace StackUnderflow.API.AspNetCore.Controllers
 
             QuestionWriteContext ctx = new QuestionWriteContext(
                 new EFList<Post>(_dbContext.Post),
-                new EFList<User>(_dbContext.User));
+                new EFList<User>(_dbContext.User),
+                new EFList<Post>(_dbContext.Post));
 
             var dependencies = new QuestionDependencies();
 

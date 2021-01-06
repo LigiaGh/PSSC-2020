@@ -13,13 +13,17 @@ namespace StackUnderflow.Domain.Core.Contexts.Question
         public ICollection<User> Users { get; }
         public ICollection<Post> Replies { get; }
 
-        public QuestionWriteContext(ICollection<Post> questions, ICollection<User> users)
+        public QuestionWriteContext(ICollection<Post> questions, ICollection<User> users, ICollection<Post> replies)
         {
             Questions = questions ?? new List<Post>(0);
             Users = users ?? new List<User>(0);
-            Replies = Replies ?? new List<Post>(0);
+            Replies = replies ?? new List<Post>(0);
         }
 
+        public QuestionWriteContext(ICollection<Post> questions)
+        {
+            Questions = questions ?? new List<Post>(0);
+        }
         //public QuestionWriteContext(ICollection<Post> questions, ICollection<User> users, ICollection<PostTag> tags)
         //{
         //    Questions = questions ?? new List<Post>(0);
